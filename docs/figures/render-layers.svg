@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420" font-family="'Plus Jakarta Sans','PingFang SC','Microsoft YaHei',system-ui,sans-serif">
+  <title>一尾鱼的四层 DOM：两层给位移朝向，两层给动效</title>
+
+  <defs>
+    <g id="gfish2">
+      <path d="M30 -3 L56 -22 Q61 0 56 22 Z" fill="#fb923c"/>
+      <ellipse cx="0" cy="0" rx="30" ry="17" fill="#ff6b6b"/>
+      <path d="M-8 -14 Q6 -28 20 -12 Z" fill="#fde047"/>
+      <path d="M-30 6 Q-16 20 0 16" fill="none" stroke="#fb923c" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="-19" cy="-3" r="2.8" fill="#1b2a2e"/>
+    </g>
+  </defs>
+
+  <text x="24" y="30" font-size="18" font-weight="600" fill="#111d20">一尾鱼的四层 DOM</text>
+  <text x="24" y="50" font-size="11" fill="#7e8c8f">逐层嵌套，各管一件事：外面两层管「在哪、朝哪」，里面两层管「变成什么样、演什么」</text>
+
+  <!-- 第一层 -->
+  <rect x="24" y="76" width="380" height="320" rx="16" fill="none" stroke="#006671" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <!-- 第二层 -->
+  <rect x="56" y="108" width="316" height="256" rx="14" fill="none" stroke="#3a8e9a" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <!-- 第三层 -->
+  <rect x="88" y="140" width="252" height="192" rx="12" fill="#3a8e9a" fill-opacity="0.05" stroke="#76a9ab" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <!-- 第四层 -->
+  <rect x="120" y="172" width="188" height="128" rx="10" fill="#e08e79" fill-opacity="0.06" stroke="#e08e79" stroke-width="1.8" stroke-dasharray="6 5"/>
+
+  <use href="#gfish2" transform="translate(214,236) scale(1.3)"/>
+
+  <!-- 引线 -->
+  <g stroke-width="1.5" fill="none">
+    <path d="M404 236 L444 109" stroke="#006671" stroke-opacity="0.55"/>
+    <path d="M372 236 L444 185" stroke="#3a8e9a" stroke-opacity="0.55"/>
+    <path d="M340 236 L444 261" stroke="#76a9ab" stroke-opacity="0.7"/>
+    <path d="M308 236 L444 337" stroke="#e08e79" stroke-opacity="0.7"/>
+  </g>
+
+  <!-- 标签 -->
+  <g>
+    <rect x="444" y="99" width="9" height="9" rx="2" fill="#006671"/>
+    <text x="462" y="108" font-size="13" font-weight="600" fill="#111d20">.fish-node</text>
+    <text x="444" y="128" font-size="11" fill="#7e8c8f">translate3d(x, y) —— 每帧覆写</text>
+
+    <rect x="444" y="175" width="9" height="9" rx="2" fill="#3a8e9a"/>
+    <text x="462" y="184" font-size="13" font-weight="600" fill="#111d20">.fish-tilt</text>
+    <text x="444" y="204" font-size="11" fill="#7e8c8f">rotate + scaleX(朝向) —— 每帧覆写</text>
+
+    <rect x="444" y="251" width="9" height="9" rx="2" fill="#76a9ab"/>
+    <text x="462" y="260" font-size="13" font-weight="600" fill="#111d20">.fish-puff</text>
+    <text x="444" y="280" font-size="11" fill="#7e8c8f">scale(--grow × --puff) —— 成长 / 鼓胀</text>
+
+    <rect x="444" y="327" width="9" height="9" rx="2" fill="#e08e79"/>
+    <text x="462" y="336" font-size="13" font-weight="600" fill="#111d20">.fish-poke</text>
+    <text x="444" y="356" font-size="11" fill="#7e8c8f">动画类（fx-spin / fx-wag）—— 双击绝活</text>
+  </g>
+
+  <text x="360" y="414" font-size="12" text-anchor="middle" fill="#7e8c8f">外两层每帧被主循环覆写，内两层专供动效 —— 于是四种动效可以同时发生而互不打架</text>
+</svg>

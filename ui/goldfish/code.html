@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <!-- Soft Glow and Shadows -->
+    <filter id="goldfish-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#f97316" flood-opacity="0.22" />
+    </filter>
+    
+    <!-- Gradients -->
+    <linearGradient id="body-grad" x1="10%" y1="20%" x2="90%" y2="80%">
+      <stop offset="0%" stop-color="#ff9a76" />
+      <stop offset="50%" stop-color="#ff6b6b" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+
+    <linearGradient id="belly-grad" x1="30%" y1="0%" x2="30%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#ffe4d6" stop-opacity="0.1" />
+    </linearGradient>
+
+    <linearGradient id="fin-tail" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fca5a5" stop-opacity="0.9" />
+      <stop offset="60%" stop-color="#fb923c" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.4" />
+    </linearGradient>
+
+    <linearGradient id="dorsal-grad" x1="0%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#ff7e67" />
+      <stop offset="100%" stop-color="#fde047" stop-opacity="0.85" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background gentle aura (subtle water ring) -->
+  <circle cx="200" cy="200" r="170" fill="#f0fdfa" opacity="0.6"/>
+  <circle cx="200" cy="200" r="150" fill="#e0f2fe" opacity="0.4"/>
+
+  <!-- Goldfish Illustration -->
+  <g filter="url(#goldfish-shadow)" transform="translate(0, -5)">
+    <!-- Flowing Caudal Fin (Big tail fins) -->
+    <!-- Top tail wave -->
+    <path d="M 230 195 C 290 160 340 110 365 140 C 375 155 350 190 320 195 C 350 205 380 235 365 260 C 345 285 280 235 230 205 Z" 
+          fill="url(#fin-tail)" />
+    <!-- Layered secondary flowing fin flutter -->
+    <path d="M 240 190 C 295 145 330 135 345 155 C 330 175 300 185 270 195 C 310 205 345 230 330 250 C 305 265 265 225 235 205 Z" 
+          fill="#fda4af" opacity="0.55" />
+
+    <!-- Ventral & Pectoral Back Fins -->
+    <path d="M 180 235 C 190 270 215 285 225 275 C 230 265 210 240 195 228 Z" fill="url(#fin-tail)" opacity="0.8" />
+    <path d="M 145 225 C 130 265 105 275 95 265 C 90 250 120 235 135 220 Z" fill="url(#fin-tail)" opacity="0.75" />
+
+    <!-- Dorsal Fin (Top wave) -->
+    <path d="M 140 155 C 160 120 200 115 225 135 C 215 150 190 160 170 165 Z" fill="url(#dorsal-grad)" />
+
+    <!-- Main Chubby Goldfish Body -->
+    <path d="M 85 190 C 85 145 130 130 190 145 C 240 155 255 185 250 210 C 240 245 185 260 135 250 C 95 240 85 215 85 190 Z" 
+          fill="url(#body-grad)" />
+
+    <!-- Belly Highlight (soft & cute) -->
+    <path d="M 105 210 C 120 245 170 255 215 235 C 190 248 135 245 110 220 Z" fill="url(#belly-grad)" />
+
+    <!-- Soft Cheek Blush -->
+    <ellipse cx="118" cy="206" rx="14" ry="10" fill="#f43f5e" opacity="0.35" />
+
+    <!-- Front Pectoral Fin (main cute flapping fin) -->
+    <path d="M 135 210 C 145 245 170 260 178 250 C 182 238 165 218 150 205 Z" fill="url(#dorsal-grad)" />
+
+    <!-- Big Innocent Eye -->
+    <circle cx="112" cy="176" r="10" fill="#1e293b" />
+    <circle cx="109" cy="172" r="3.8" fill="#ffffff" />
+    <circle cx="115" cy="179" r="1.6" fill="#ffffff" opacity="0.8" />
+
+    <!-- Little Cute Mouth -->
+    <path d="M 85 194 C 80 193 78 197 84 200" stroke="#c2410c" stroke-width="2.5" stroke-linecap="round" fill="none" />
+
+    <!-- Minimal Scale Shimmer / Decor Dots -->
+    <circle cx="170" cy="180" r="3" fill="#ffffff" opacity="0.4" />
+    <circle cx="190" cy="175" r="2.5" fill="#ffffff" opacity="0.3" />
+    <circle cx="180" cy="195" r="2" fill="#ffffff" opacity="0.35" />
+    <circle cx="205" cy="190" r="2" fill="#ffffff" opacity="0.25" />
+  </g>
+
+  <!-- Happy little companion bubbles -->
+  <circle cx="65" cy="160" r="6" fill="#38bdf8" opacity="0.35" />
+  <circle cx="63" cy="158" r="2" fill="#ffffff" opacity="0.7" />
+  <circle cx="50" cy="140" r="4.5" fill="#38bdf8" opacity="0.25" />
+  <circle cx="78" cy="125" r="8" fill="#38bdf8" opacity="0.3" />
+  <circle cx="75" cy="122" r="2.5" fill="#ffffff" opacity="0.7" />
+</svg>

@@ -1,0 +1,484 @@
+@import './tokens.css';
+
+/* ==================================================================
+ * 基础
+ * ================================================================== */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  color: var(--color-on-surface);
+}
+
+body.manager-body {
+  user-select: none;
+}
+
+/* 桌面鱼层：整层不吃鼠标，只有鱼本体接管事件 */
+body.overlay-body,
+body.overlay-body #root {
+  pointer-events: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+}
+
+/* ==================================================================
+ * 玻璃层：磨砂 + 折射边
+ * ================================================================== */
+@utility glass-panel {
+  background: rgb(255 255 255 / 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 1px 0 rgb(255 255 255 / 0.8),
+    0 0 0 1px rgb(118 169 171 / 0.15),
+    var(--shadow-shell);
+}
+
+@utility glass-card {
+  background: rgb(255 255 255 / 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    inset 0 1px 1px 0 rgb(255 255 255 / 0.8),
+    0 0 0 1px rgb(118 169 171 / 0.15),
+    var(--shadow-soft);
+}
+
+@utility glass-float {
+  background: rgb(255 255 255 / 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 1px 0 rgb(255 255 255 / 0.8),
+    0 0 0 1px rgb(118 169 171 / 0.15),
+    var(--shadow-float);
+}
+
+/* ==================================================================
+ * 控件：胶囊几何 + 柔性过渡
+ * ================================================================== */
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 0.875rem;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-on-primary);
+  background: linear-gradient(180deg, #0a7784 0%, var(--color-primary) 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3);
+  transition:
+    box-shadow 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+
+  &:hover:not(:disabled) {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 4px 14px rgb(58 142 154 / 0.25);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+}
+
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  border: 1px solid rgb(118 169 171 / 0.2);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.75rem;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-river-slate);
+  background: rgb(255 255 255 / 0.6);
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+
+  &:hover:not(:disabled) {
+    background: rgb(255 255 255 / 0.85);
+    color: var(--color-primary);
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+}
+
+@utility icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-river-slate);
+  background: transparent;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+
+  &:hover {
+    background: rgb(58 142 154 / 0.08);
+    color: var(--color-primary);
+  }
+}
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-primary);
+  background: rgb(118 169 171 / 0.12);
+}
+
+@utility field {
+  width: 100%;
+  border: 1px solid rgb(118 169 171 / 0.2);
+  border-radius: var(--radius-nested);
+  background: rgb(255 255 255 / 0.65);
+  padding: 0.5rem 0.75rem;
+  font-size: 12px;
+  color: var(--color-on-surface);
+  outline: none;
+  transition:
+    box-shadow 150ms ease,
+    background 150ms ease;
+
+  &::placeholder {
+    color: var(--color-muted);
+  }
+  &:focus {
+    background: #fff;
+    box-shadow: 0 0 0 3px rgb(58 142 154 / 0.15);
+  }
+}
+
+/* ==================================================================
+ * 鱼：鳍摆动
+ * 通过 CSS 变量实现每尾鱼的节奏差异，避免逐帧写 DOM
+ * ================================================================== */
+.fish-art {
+  overflow: visible;
+}
+
+/* 四层结构：位置 → 倾斜翻转 → 鼓气 → 被摸反馈，各司其职互不干扰 */
+.fish-node {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  /* 悬停时系统光标让位给 .pet-hand 的抚摸手势，见文件末尾 */
+  cursor: none;
+  will-change: transform;
+}
+
+.fish-tilt,
+.fish-puff,
+.fish-poke {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+}
+
+.fish-tilt {
+  will-change: transform;
+}
+
+.fish-puff {
+  /* --grow 是成长倍率，与外框解耦：外层 translate 用未缩放的外框，缩放只发生在这里，
+     transform-origin 是中心，所以鱼是以自身中心为轴长大，位置不漂 */
+  transform: scale(calc(var(--puff, 1) * var(--grow, 1)));
+  transition: transform 220ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+/* ---- 抚摸手势光标 ---- */
+.pet-hand {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 2px 6px rgb(15 23 42 / 0.4));
+  /* 主循环下一帧才会写入真实位置，先摆到屏幕外，免得在左上角闪一下 */
+  transform: translate3d(-999px, -999px, 0);
+}
+
+/* 来回轻抚：手型整体上下翻转（指尖朝下），以指尖为轴小幅摆动，
+   触点因此始终钉在指针上，只有手身在晃 */
+.pet-hand > svg {
+  animation: pet-stroke 1.15s ease-in-out infinite;
+  transform-origin: 46% 16%;
+}
+
+@keyframes pet-stroke {
+  0%,
+  100% {
+    transform: scaleY(-1) translateX(-2.6px) rotate(-8deg);
+  }
+  50% {
+    transform: scaleY(-1) translateX(2.6px) rotate(8deg);
+  }
+}
+
+/* 独立一层承载「被戳」的弹性挤压：外层的 transform 由主循环逐帧写，动不得 */
+.fish-poke.poked {
+  animation: fish-poke 560ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+@keyframes fish-poke {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  16% {
+    transform: scale(1.16, 0.86) rotate(-6deg);
+  }
+  36% {
+    transform: scale(0.93, 1.09) rotate(5deg);
+  }
+  56% {
+    transform: scale(1.07, 0.95) rotate(-3deg);
+  }
+  76% {
+    transform: scale(0.98, 1.02) rotate(1.5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ---- 鱼种绝活（双击触发，由主循环在计时区间内挂类） ---- */
+
+/* 金鱼：原地欢快转个圈 */
+.fish-poke.fx-spin {
+  animation: fx-spin 900ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@keyframes fx-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  35% {
+    transform: rotate(200deg) scale(1.1);
+  }
+  70% {
+    transform: rotate(320deg) scale(0.96);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* 斗鱼：整条鱼左右轻摆，尾鳍甩成一阵风。
+   鳍的 animation-duration 来自内联 --fin-period，靠选择器优先级直接盖掉 */
+.fish-poke.fx-wag {
+  animation: fx-wag 900ms ease-in-out;
+}
+
+.fish-poke.fx-wag .fin-tail,
+.fish-poke.fx-wag .fin-dorsal,
+.fish-poke.fx-wag .fin-ventral {
+  animation-duration: 0.32s;
+}
+
+.fish-poke.fx-wag .fin-pectoral {
+  animation-duration: 0.14s;
+}
+
+@keyframes fx-wag {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(-4px, -2px, 0) rotate(-3deg);
+  }
+  50% {
+    transform: translate3d(4px, 1px, 0) rotate(2.5deg);
+  }
+  75% {
+    transform: translate3d(-3px, 1px, 0) rotate(-1.5deg);
+  }
+}
+
+/* ---- 粒子：水花 / 爱心 / 泡泡共用定位，各挂各的动画 ---- */
+.particle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.spark {
+  border-radius: var(--radius-pill);
+  border: 1px solid rgb(255 255 255 / 0.85);
+  background: radial-gradient(circle at 35% 30%, rgb(255 255 255 / 0.95), rgb(118 169 171 / 0.45));
+  animation: spark-fly 900ms cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+}
+
+@keyframes spark-fly {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.3);
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* 摸鱼时飘的爱心：直接用字形，省掉一条矢量路径 */
+.heart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: rgb(251 113 133 / 0.95);
+  text-shadow: 0 1px 4px rgb(190 24 93 / 0.4);
+  animation: heart-float 1200ms cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+}
+
+@keyframes heart-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.3);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) scale(0.95);
+    opacity: 0;
+  }
+}
+
+/* 小丑鱼吐的泡泡：一路往上冒。类名避开环境气泡的 .bubble */
+.popbubble {
+  border-radius: 50%;
+  border: 1px solid rgb(255 255 255 / 0.9);
+  background: radial-gradient(circle at 32% 28%, rgb(255 255 255 / 0.95), rgb(148 214 255 / 0.35));
+  animation: bubble-rise 1300ms ease-out forwards;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.2);
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) scale(1);
+    opacity: 0;
+  }
+}
+
+/* 鱼粮与气泡：纯装饰，不吃鼠标 */
+.pellet,
+.bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.fin-tail,
+.fin-dorsal,
+.fin-pectoral,
+.fin-ventral {
+  transform-box: fill-box;
+}
+
+.fin-tail {
+  transform-origin: 0% 50%;
+  animation: fin-sway var(--fin-period, 1.6s) ease-in-out infinite;
+  animation-delay: var(--fin-delay, 0s);
+}
+
+.fin-dorsal {
+  transform-origin: 50% 100%;
+  animation: fin-sway var(--fin-period, 1.6s) ease-in-out infinite;
+  animation-delay: var(--fin-delay, 0s);
+}
+
+.fin-ventral {
+  transform-origin: 50% 0%;
+  animation: fin-sway var(--fin-period, 1.6s) ease-in-out infinite;
+  animation-delay: var(--fin-delay, 0s);
+}
+
+.fin-pectoral {
+  transform-origin: 40% 0%;
+  animation: fin-flap calc(var(--fin-period, 1.6s) * 0.42) ease-in-out infinite;
+  animation-delay: var(--fin-delay, 0s);
+}
+
+@keyframes fin-sway {
+  0%,
+  100% {
+    transform: rotate(calc(var(--fin-amp, 7deg) * -1));
+  }
+  50% {
+    transform: rotate(var(--fin-amp, 7deg));
+  }
+}
+
+@keyframes fin-flap {
+  0%,
+  100% {
+    transform: rotate(calc(var(--fin-amp, 12deg) * -1));
+  }
+  50% {
+    transform: rotate(var(--fin-amp, 12deg));
+  }
+}
+
+/* ==================================================================
+ * 滚动条
+ * ================================================================== */
+.scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(118 169 171 / 0.35) transparent;
+}
+
+.scroll-slim::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-slim::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-pill);
+  background: rgb(118 169 171 / 0.35);
+}

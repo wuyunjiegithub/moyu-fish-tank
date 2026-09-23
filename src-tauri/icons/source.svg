@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a7784" />
+      <stop offset="55%" stop-color="#006671" />
+      <stop offset="100%" stop-color="#004a52" />
+    </linearGradient>
+    <linearGradient id="body" x1="15%" y1="10%" x2="85%" y2="95%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="45%" stop-color="#d8f6fb" />
+      <stop offset="100%" stop-color="#9feffc" />
+    </linearGradient>
+    <linearGradient id="fin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#83d3e0" stop-opacity="0.75" />
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+
+  <!-- 水体光晕 -->
+  <circle cx="392" cy="120" r="150" fill="#ffffff" opacity="0.07" />
+  <circle cx="130" cy="404" r="120" fill="#ffffff" opacity="0.05" />
+
+  <!-- 尾鳍 -->
+  <path
+    d="M 356 256 C 402 200 444 186 456 208 C 442 236 440 276 456 304 C 444 326 402 312 356 256 Z"
+    fill="url(#fin)"
+  />
+
+  <!-- 背鳍 -->
+  <path d="M 200 132 C 232 92 286 100 300 148 Z" fill="url(#fin)" />
+  <!-- 腹鳍 -->
+  <path d="M 208 380 C 226 414 262 416 272 390 C 250 378 226 376 208 380 Z" fill="url(#fin)" />
+
+  <!-- 鱼身 -->
+  <path
+    d="M 96 256 C 96 190 166 154 240 156 C 312 158 358 198 358 256 C 358 314 312 354 240 356 C 166 358 96 322 96 256 Z"
+    fill="url(#body)"
+  />
+
+  <!-- 鳃线 -->
+  <path
+    d="M 168 186 C 152 214 152 298 168 326"
+    stroke="#006671"
+    stroke-width="7"
+    stroke-linecap="round"
+    fill="none"
+    opacity="0.35"
+  />
+
+  <!-- 胸鳍 -->
+  <path
+    d="M 196 262 C 216 300 254 312 262 296 C 266 278 236 258 206 250 Z"
+    fill="#83d3e0"
+    opacity="0.9"
+  />
+
+  <!-- 腮红 -->
+  <ellipse cx="140" cy="298" rx="26" ry="17" fill="#e08e79" opacity="0.4" />
+
+  <!-- 眼 -->
+  <circle cx="150" cy="232" r="22" fill="#111d20" />
+  <circle cx="143" cy="224" r="8.5" fill="#ffffff" />
+  <circle cx="157" cy="239" r="3.6" fill="#ffffff" opacity="0.85" />
+
+  <!-- 嘴 -->
+  <path
+    d="M 100 262 C 110 276 128 274 134 264"
+    stroke="#004a52"
+    stroke-width="7"
+    stroke-linecap="round"
+    fill="none"
+    opacity="0.75"
+  />
+
+  <!-- 气泡 -->
+  <circle cx="72" cy="176" r="13" fill="#ffffff" opacity="0.4" />
+  <circle cx="68" cy="172" r="4.5" fill="#ffffff" opacity="0.75" />
+  <circle cx="52" cy="132" r="8" fill="#ffffff" opacity="0.3" />
+</svg>

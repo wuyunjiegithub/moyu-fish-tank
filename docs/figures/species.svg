@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 428" width="900" height="428" font-family="'Plus Jakarta Sans','PingFang SC','Microsoft YaHei',system-ui,sans-serif">
+  <title>四种内置鱼：外观、性格、水域与双击绝活</title>
+
+  <!-- ============================ 小金鱼 ============================ -->
+  <g transform="translate(16,16)">
+    <rect width="424" height="190" rx="18" fill="#f9fdfe" stroke="#dcecef"/>
+    <g transform="translate(78,102)">
+      <path d="M30 -3 L56 -22 Q61 0 56 22 Z" fill="#fb923c"/>
+      <ellipse cx="0" cy="0" rx="30" ry="17" fill="#ff6b6b"/>
+      <path d="M-8 -14 Q6 -28 20 -12 Z" fill="#fde047"/>
+      <path d="M-30 6 Q-16 20 0 16" fill="none" stroke="#fb923c" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="-19" cy="-3" r="2.8" fill="#1b2a2e"/>
+    </g>
+    <circle cx="352" cy="40" r="7" fill="#ff6b6b"/>
+    <circle cx="370" cy="40" r="7" fill="#fde047"/>
+    <circle cx="388" cy="40" r="7" fill="#fb923c" stroke="#e3eef1"/>
+    <text x="146" y="46" font-size="19" font-weight="600" fill="#111d20">小金鱼</text>
+    <text x="146" y="68" font-size="12" fill="#7e8c8f">经典灵动 · 基准尺寸 84px</text>
+    <text x="146" y="100" font-size="11" fill="#7e8c8f">性格</text>
+    <text x="182" y="100" font-size="13" fill="#3f484a">活跃 · 游得轻快</text>
+    <text x="146" y="126" font-size="11" fill="#7e8c8f">水域</text>
+    <text x="182" y="126" font-size="13" fill="#3f484a">中层悠游</text>
+    <text x="146" y="152" font-size="11" fill="#7e8c8f">绝活</text>
+    <text x="182" y="152" font-size="13" fill="#006671">原地转个圈圈</text>
+  </g>
+
+  <!-- ============================ 小丑鱼 ============================ -->
+  <g transform="translate(460,16)">
+    <rect width="424" height="190" rx="18" fill="#f9fdfe" stroke="#dcecef"/>
+    <g transform="translate(78,102)">
+      <path d="M30 -3 L56 -22 Q61 0 56 22 Z" fill="#fb923c"/>
+      <ellipse cx="0" cy="0" rx="30" ry="17" fill="#f97316"/>
+      <path d="M-8 -14 Q6 -28 20 -12 Z" fill="#fb923c"/>
+      <rect x="8" y="-17" width="6" height="34" rx="3" fill="#ffffff"/>
+      <rect x="-14" y="-16" width="6" height="32" rx="3" fill="#ffffff"/>
+      <circle cx="-19" cy="-3" r="2.8" fill="#1b2a2e"/>
+    </g>
+    <circle cx="352" cy="40" r="7" fill="#f97316"/>
+    <circle cx="370" cy="40" r="7" fill="#ffffff" stroke="#e3eef1"/>
+    <circle cx="388" cy="40" r="7" fill="#fb923c"/>
+    <text x="146" y="46" font-size="19" font-weight="600" fill="#111d20">小丑鱼</text>
+    <text x="146" y="68" font-size="12" fill="#7e8c8f">喜欢珊瑚 · 基准尺寸 84px</text>
+    <text x="146" y="100" font-size="11" fill="#7e8c8f">性格</text>
+    <text x="182" y="100" font-size="13" fill="#3f484a">调皮 · 游速最快 1.45×</text>
+    <text x="146" y="126" font-size="11" fill="#7e8c8f">水域</text>
+    <text x="182" y="126" font-size="13" fill="#3f484a">屏幕边缘与任务栏一带</text>
+    <text x="146" y="152" font-size="11" fill="#7e8c8f">绝活</text>
+    <text x="182" y="152" font-size="13" fill="#006671">咕噜噜吐一串泡泡</text>
+  </g>
+
+  <!-- ============================= 斗鱼 ============================= -->
+  <g transform="translate(16,222)">
+    <rect width="424" height="190" rx="18" fill="#f9fdfe" stroke="#dcecef"/>
+    <g transform="translate(78,102)">
+      <path d="M28 -6 Q56 -34 64 -10 Q70 8 54 26 Q40 34 28 16 Z" fill="#38bdf8"/>
+      <ellipse cx="0" cy="0" rx="28" ry="18" fill="#0d9488"/>
+      <path d="M-6 -16 Q8 -32 20 -14 Z" fill="#a855f7"/>
+      <circle cx="-18" cy="-3" r="2.8" fill="#1b2a2e"/>
+    </g>
+    <circle cx="352" cy="40" r="7" fill="#0d9488"/>
+    <circle cx="370" cy="40" r="7" fill="#a855f7"/>
+    <circle cx="388" cy="40" r="7" fill="#38bdf8"/>
+    <text x="146" y="46" font-size="19" font-weight="600" fill="#111d20">斗鱼</text>
+    <text x="146" y="68" font-size="12" fill="#7e8c8f">优雅尾鳍 · 基准尺寸 104px</text>
+    <text x="146" y="100" font-size="11" fill="#7e8c8f">性格</text>
+    <text x="182" y="100" font-size="13" fill="#3f484a">优雅 · 游得慢、体型最大</text>
+    <text x="146" y="126" font-size="11" fill="#7e8c8f">水域</text>
+    <text x="182" y="126" font-size="13" fill="#3f484a">中层 · 摆动幅度最大</text>
+    <text x="146" y="152" font-size="11" fill="#7e8c8f">绝活</text>
+    <text x="182" y="152" font-size="13" fill="#006671">兴高采烈地摇尾巴</text>
+  </g>
+
+  <!-- ============================= 河豚 ============================= -->
+  <g transform="translate(460,222)">
+    <rect width="424" height="190" rx="18" fill="#f9fdfe" stroke="#dcecef"/>
+    <g transform="translate(74,104)">
+      <path d="M22 -4 L42 -15 Q46 0 42 15 Z" fill="#7dd3fc"/>
+      <circle cx="0" cy="0" r="24" fill="#0ea5e9"/>
+      <ellipse cx="6" cy="8" rx="14" ry="11" fill="#e0f2fe"/>
+      <path d="M-8 -22 L-5 -30 L-2 -22 Z" fill="#7dd3fc"/>
+      <path d="M4 -23 L7 -31 L10 -22 Z" fill="#7dd3fc"/>
+      <circle cx="-11" cy="-6" r="5" fill="#ffffff"/>
+      <circle cx="-12" cy="-6" r="2.2" fill="#1b2a2e"/>
+      <path d="M-22 2 Q-26 5 -22 7" fill="none" stroke="#7dd3fc" stroke-width="2.4" stroke-linecap="round"/>
+    </g>
+    <circle cx="352" cy="40" r="7" fill="#0ea5e9"/>
+    <circle cx="370" cy="40" r="7" fill="#ffffff" stroke="#e3eef1"/>
+    <circle cx="388" cy="40" r="7" fill="#7dd3fc"/>
+    <text x="146" y="46" font-size="19" font-weight="600" fill="#111d20">河豚</text>
+    <text x="146" y="68" font-size="12" fill="#7e8c8f">偶尔胀气 · 基准尺寸 94px</text>
+    <text x="146" y="100" font-size="11" fill="#7e8c8f">性格</text>
+    <text x="182" y="100" font-size="13" fill="#3f484a">慵懒 · 游速最慢 0.6×</text>
+    <text x="146" y="126" font-size="11" fill="#7e8c8f">水域</text>
+    <text x="182" y="126" font-size="13" fill="#3f484a">屏幕下方发呆</text>
+    <text x="146" y="152" font-size="11" fill="#7e8c8f">绝活</text>
+    <text x="182" y="152" font-size="13" fill="#006671">嘭！胀成圆鼓鼓的球</text>
+  </g>
+</svg>

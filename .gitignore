@@ -1,0 +1,34 @@
+# ---- 依赖与前端构建产物 ----
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# ---- Rust / Tauri ----
+# target 目录单是运行时就有数 GB，且完全可以由 Cargo 重建
+src-tauri/target/
+# Tauri 运行期生成的 acp schema，不入库
+src-tauri/gen/schemas/
+
+# ---- 本地参考原型，不纳入本仓库 ----
+# 仅作交互设计参考，含独立的 Express + Gemini 服务端，与最终形态无关
+fish-test/
+
+# ---- 环境变量与密钥 ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- 日志 ----
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
