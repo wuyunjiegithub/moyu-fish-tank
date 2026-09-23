@@ -202,6 +202,16 @@ pub fn show_manager(app: &AppHandle) {
     }
 }
 
+/// 有人又双击了一次图标：单实例插件挡下第二个进程后走这里，
+/// 把已经在跑的这份叫到台前，不然用户会觉得「点了没反应」。
+pub fn reveal(app: &AppHandle) {
+    if app.state::<AppState>().hidden.load(Ordering::Relaxed) {
+        // 鱼层正被老板键藏着，先解除隐藏，否则管理窗口出来了桌面仍是空的
+        apply_boss_key(app, false);
+    }
+    show_manager(app);
+}
+
 /// 老板键：一键收起鱼群与管理窗口，再按一次还原
 pub fn apply_boss_key(app: &AppHandle, active: bool) {
     let state = app.state::<AppState>();

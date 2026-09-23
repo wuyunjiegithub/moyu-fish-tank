@@ -84,7 +84,15 @@ pub fn broadcast_fishes(app: &tauri::AppHandle) {
 }
 
 pub fn run() {
+    // 单实例闸门必须最先挂：注册在它之后的插件，在第二个进程里会先跑完各自的初始化
+    // （托盘图标、全局热键、游标轮询各来一份），桌面上就真出现两缸鱼了。
+    let gate = tauri_plugin_single_instance::init(|app, _argv, _cwd| {
+        // 插件已把第二份进程挡在门外，这里只需把在跑的那份叫到台前
+        commands::reveal(app);
+    });
+
     tauri::Builder::default()
+        .plugin(gate)
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
             None,
