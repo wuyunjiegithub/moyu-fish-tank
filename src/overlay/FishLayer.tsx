@@ -180,6 +180,24 @@ export function FishLayer() {
       }
     };
 
+    /**
+     * 通知 Rust 把鱼层窗口显示出来。
+     *
+     * 不能只押在 requestAnimationFrame 上 —— 窗口此刻还是 visible: false，
+     * 而 Chromium 对不可见窗口根本不发帧，rAF 回调一次都不会执行，
+     * 于是「等首帧 → 显示窗口 → 有帧」环环相扣成了死锁：
+     * 打包后鱼层永远停在隐藏态，管理窗口正常但桌面上一条鱼也没有。
+     * 定时器兜底保证一定能放行，rAF 只保留「尽量不白闪」的优化意义。
+     */
+    const signalReady = () => {
+      if (disposed) return;
+      const timer = window.setTimeout(() => void api.overlayReady(), 150);
+      requestAnimationFrame(() => {
+        window.clearTimeout(timer);
+        void api.overlayReady();
+      });
+    };
+
     const boot = async () => {
       const [records, settings] = await Promise.all([api.listFishes(), api.getSettings()]);
       if (disposed) return;
@@ -224,13 +242,14 @@ export function FishLayer() {
         }),
       );
 
-      // 等首帧真正画出来再显示窗口，避免透明窗口白闪
-      requestAnimationFrame(() => {
-        if (!disposed) void api.overlayReady();
-      });
+      signalReady();
     };
 
-    void boot();
+    void boot().catch((err) => {
+      // 初始化失败也必须放行显示，否则鱼层永远停在隐藏态、整个应用看起来像坏了
+      console.error('[鱼层] 初始化失败，仍将显示窗口', err);
+      signalReady();
+    });
 
     return () => {
       disposed = true;
