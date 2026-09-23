@@ -54,8 +54,13 @@ const HUNGER_PER_SECOND = 100 / 3600;
 const DWELL_LIMIT = 2.6;
 /** 双击表演时长（秒） */
 export const SPECIAL_SECONDS = 1.5;
-/** 受惊窜开的持续时长（秒） */
-const STARTLE_SECONDS = 0.9;
+/** 受惊窜开的持续时长（秒）——够它一口气窜到远处 */
+const STARTLE_SECONDS = 1.4;
+/** 受惊期间的速度倍率：整段保持冲刺，光靠初速的惯性滑行几帧就蔫了 */
+const STARTLE_BOOST = 2.6;
+/** 受惊逃逸距离（px）：背对鼠标一口气窜出去的远近 */
+const STARTLE_FLEE_MIN = 620;
+const STARTLE_FLEE_SPAN = 340;
 
 const TILT_LIMIT = 0.42;
 
@@ -240,8 +245,9 @@ export function stepFish(fish: Fish, ctx: StepContext): void {
         fish.statusText = `${fish.name} · ${species.defaultStatus}`;
       }
     } else {
-      // 到达目标或随机换向；restless 让每尾鱼换目标的频繁程度不同
-      if (targetDist < 60 || Math.random() < 0.005 * fish.restless) {
+      // 到达目标或随机换向；restless 让每尾鱼换目标的频繁程度不同。
+      // 逃逸途中不许改主意：随机换向会把刚窜出去的那段距离当场抹掉
+      if (fish.state !== 'startle' && (targetDist < 60 || Math.random() < 0.005 * fish.restless)) {
         if (fish.idleTime > REST_AFTER && Math.random() < 0.35) {
           fish.state = 'sleep';
           fish.stateTimer = 5 + Math.random() * 6;
@@ -265,6 +271,9 @@ export function stepFish(fish: Fish, ctx: StepContext): void {
 
   // 表演时放慢身段，像在专门秀给你看
   if (fish.specialTimer > 0) speed *= 0.35;
+
+  // 受惊整段保持冲刺：只给初速的话，惯性一衰减就慢下来，看着像没躲开
+  if (fish.state === 'startle') speed = base * STARTLE_BOOST;
 
   // ---- 冲刺—滑行 ----
   // 真鱼不是匀速直线：摆几下尾冲一段，再松劲滑一段。相位推进随 speed 走，
@@ -377,7 +386,7 @@ export function startleFish(fish: Fish, from: { x: number; y: number }, bounds: 
   fish.vx = Math.cos(angle) * dash;
   fish.vy = Math.sin(angle) * dash * 0.7;
 
-  const flee = 320 + Math.random() * 160;
+  const flee = STARTLE_FLEE_MIN + Math.random() * STARTLE_FLEE_SPAN;
   const maxX = Math.max(EDGE + 1, bounds.width - EDGE);
   const maxY = Math.max(EDGE + 1, bounds.height - EDGE);
   fish.targetX = Math.max(EDGE, Math.min(maxX, fish.x + Math.cos(angle) * flee));
