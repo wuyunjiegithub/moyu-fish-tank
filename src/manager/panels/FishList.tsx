@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GROWTH_LABEL, getSpecies, growthScale, growthStageOf, paletteOf } from '@/fish/species';
 import { FishRenderer } from '@/fish/renderer';
 import { useFishStore } from '@/store/fishStore';
@@ -16,6 +16,40 @@ const ageLabel = (ms: number) => {
   return hours > 0 ? `${hours} 小时 ${minutes} 分` : `${minutes} 分钟`;
 };
 
+/** 功德提示停留时长，与 global.css 里 .merit-toast 的动画时长对齐 */
+const MERIT_TOAST_MS = 1800;
+
+/** 放生按钮上的小鱼，尾鳍上顶着一颗心 */
+function ReleaseMark() {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    >
+      <ellipse cx="8" cy="13.4" rx="5.6" ry="4.1" />
+      <path d="M13.2 13.4 17.6 10.2v6.4Z" />
+      <circle cx="6" cy="12.4" r="0.85" fill="currentColor" stroke="none" />
+      <path
+        className="release-heart"
+        d="M14.6 8.68 11.07 5.15a2.14 2.14 0 0 1 3.02-3.02l.51.51.51-.51a2.14 2.14 0 0 1 3.02 3.02Z"
+      />
+    </svg>
+  );
+}
+
+function HeartMark() {
+  return (
+    <svg viewBox="0 0 24 24" className="release-heart h-3.5 w-3.5">
+      <path d="M12 21 3.6 12.6a5.1 5.1 0 0 1 7.2-7.2l1.2 1.2 1.2-1.2a5.1 5.1 0 0 1 7.2 7.2Z" />
+    </svg>
+  );
+}
+
 export function FishList() {
   const fishes = useFishStore((s) => s.fishes);
   const maxFish = useFishStore((s) => s.settings.maxFish);
@@ -25,6 +59,8 @@ export function FishList() {
   const [draft, setDraft] = useState<{ id: string; value: string } | null>(null);
   // 成长慢到按小时计，但年龄文案得跟着走，30 秒刷一次就够
   const [now, setNow] = useState(() => Date.now());
+  const [merit, setMerit] = useState<{ count: number; at: number } | null>(null);
+  const meritTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 30_000);
@@ -37,8 +73,17 @@ export function FishList() {
     setDraft(null);
   };
 
+  const release = async (id: string) => {
+    play('release');
+    await removeFish(id);
+    // 手快连放几尾就把功德攒成一条提示，免得糊满一屏
+    setMerit((prev) => ({ count: (prev?.count ?? 0) + 1, at: Date.now() }));
+    if (meritTimer.current !== null) window.clearTimeout(meritTimer.current);
+    meritTimer.current = window.setTimeout(() => setMerit(null), MERIT_TOAST_MS);
+  };
+
   return (
-    <section className="glass-card flex min-h-0 flex-col rounded-panel p-md">
+    <section className="glass-card relative flex min-h-0 flex-col rounded-panel p-md">
       <div className="mb-sm flex items-baseline gap-sm px-xs">
         <h2 className="text-[13px] font-medium text-on-surface">鱼群</h2>
         <span className="text-[11px] text-muted">
@@ -124,21 +169,29 @@ export function FishList() {
 
                 <button
                   type="button"
-                  className="icon-btn shrink-0"
-                  title="放生"
-                  onClick={() => {
-                    play('release');
-                    void removeFish(fish.id);
-                  }}
+                  className="btn-release"
+                  title={`把${fish.name}放归自然`}
+                  onClick={() => void release(fish.id)}
                 >
-                  <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
-                    <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
-                  </svg>
+                  <ReleaseMark />
+                  放生
                 </button>
               </li>
             );
           })}
         </ul>
+      )}
+
+      {merit && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-lg flex justify-center">
+          <span
+            key={merit.at}
+            className="merit-toast glass-float flex items-center gap-xs rounded-pill px-md py-1.5 text-[12px] font-medium text-primary"
+          >
+            <HeartMark />
+            功德 +{merit.count}
+          </span>
+        </div>
       )}
     </section>
   );

@@ -144,6 +144,63 @@ input {
   }
 }
 
+/* 放生：把「删除」式的叉叉换成带心意的小鱼按钮 */
+@utility btn-release {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.5rem;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-river-slate);
+  background: rgb(118 169 171 / 0.1);
+  transition:
+    color 150ms ease,
+    background 150ms ease,
+    transform 150ms ease;
+
+  &:hover {
+    color: var(--color-primary);
+    background: rgb(58 142 154 / 0.16);
+  }
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+/* 按钮与提示里的那颗心：固定珊瑚色，不跟着按钮文字色走 */
+.release-heart {
+  fill: var(--color-coral);
+  stroke: none;
+}
+
+/* 放生后的功德提示：浮起再淡走，时长与 MERIT_TOAST_MS 对齐 */
+.merit-toast {
+  animation: merit-rise 1800ms cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+}
+
+@keyframes merit-rise {
+  0% {
+    transform: translate3d(0, 10px, 0) scale(0.92);
+    opacity: 0;
+  }
+  14% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, -14px, 0) scale(1);
+    opacity: 0;
+  }
+}
+
 @utility chip {
   display: inline-flex;
   align-items: center;
